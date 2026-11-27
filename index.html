@@ -343,12 +343,12 @@ function plan(dow,mode){
 const arc=(cx,cy,r,a0,a1)=>{const A=m=>m/1440*2*Math.PI-Math.PI/2;let s=A(a0),e=A(a1);if(a1<=a0)e+=2*Math.PI;const x0=cx+r*Math.cos(s),y0=cy+r*Math.sin(s),x1=cx+r*Math.cos(e),y1=cy+r*Math.sin(e);return`M${x0.toFixed(1)} ${y0.toFixed(1)}A${r} ${r} 0 ${e-s>Math.PI?1:0} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`};
 function drawDial(){
   const s=$('#dial'),W=s.clientWidth;if(!W)return;
-  const c=W/2,sw=Math.max(18,W*.09),r=c-sw/2-26,k=K(sel),d=day(k),P=plan(sel.getDay(),d.mode||'normal'),done=d.done||{};
+  const c=W/2,sw=Math.max(18,W*.09),r=c-sw/2-40,k=K(sel),d=day(k),P=plan(sel.getDay(),d.mode||'normal'),done=d.done||{};
   let h=`<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="var(--card)" stroke-width="${sw}"/>`;
   const order=['school','sleep','free','rest','wind','anchor','side','focus'];
   P.filter(p=>p.d>0).sort((a,b)=>order.indexOf(a.c)-order.indexOf(b.c)).forEach(p=>{const a0=mins(p.t),col=done[p.k]?'var(--lime)':COL[p.c];h+=`<path d="${arc(c,c,r,a0,a0+p.d)}" fill="none" stroke="${col}" stroke-width="${sw}"/>`});
   for(let i=0;i<24;i++){const a=i/24*2*Math.PI-Math.PI/2,r1=r+sw/2+4,r2=r1+(i%6?4:9);h+=`<line x1="${c+r1*Math.cos(a)}" y1="${c+r1*Math.sin(a)}" x2="${c+r2*Math.cos(a)}" y2="${c+r2*Math.sin(a)}" stroke="var(--mute)" stroke-width="${i%6?1:2}"/>`}
-  [['12am',0],['6am',6],['12pm',12],['6pm',18]].forEach(([l,i])=>{const a=i/24*2*Math.PI-Math.PI/2,rr=r+sw/2+20;h+=`<text x="${c+rr*Math.cos(a)}" y="${c+rr*Math.sin(a)+4}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--mute)" font-family="Inter,sans-serif">${l}</text>`});
+  [['12am',0],['6am',6],['12pm',12],['6pm',18]].forEach(([l,i])=>{const a=i/24*2*Math.PI-Math.PI/2,rr=r+sw/2+25;h+=`<text x="${c+rr*Math.cos(a)}" y="${c+rr*Math.sin(a)+4}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--mute)" font-family="Inter,sans-serif">${l}</text>`});
   if(k===today()){const n=new Date(),m=n.getHours()*60+n.getMinutes(),a=m/1440*2*Math.PI-Math.PI/2,ri=r-sw/2-6,ro=r+sw/2+2;h+=`<line x1="${c+ri*Math.cos(a)}" y1="${c+ri*Math.sin(a)}" x2="${c+ro*Math.cos(a)}" y2="${c+ro*Math.sin(a)}" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><circle cx="${c+ri*Math.cos(a)}" cy="${c+ri*Math.sin(a)}" r="6" fill="var(--ink)"/>`}
   s.innerHTML=h;
   let ctr;
